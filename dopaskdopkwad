@@ -100,7 +100,7 @@ local StunIm = DOD:CreateSlider({
    Range = {0,500},
    Increment = 1,
    Suffix = "Stun Immunity Time",
-   CurrentValue = 10,
+   CurrentValue = 500,
    Flag = "Slider3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
    local plr,char,hum = getClient()
@@ -108,12 +108,13 @@ local StunIm = DOD:CreateSlider({
    end,
 })
 
-local Button = DOD:CreateButton({
+--[[local Button = DOD:CreateButton({
    Name = "No Stun",
    Callback = function()
         local plr,char,hum = getClient()
-        char:GetAttributeChangedSignal('Stunned'):Connect(function()
-            char:SetAttribute("Stunned", false)
+        plr.Character:GetAttributeChangedSignal('Stunned'):Connect(function()
+            plr.Character:SetAttribute("Stunned", false)
         end
    end,
 })
+--]]
