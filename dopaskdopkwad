@@ -79,7 +79,7 @@ local Slider = DOD:CreateSlider({
    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
    local plr,char,hum = getClient()
-   char:SetAttribute("WalkSpeed", Slider.CurrentValue)
+   char:SetAttribute("WalkSpeed", Value)
    end,
 })
 
@@ -92,6 +92,6 @@ local MaxStamina = DOD:CreateSlider({
    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
    local plr,char,hum = getClient()
-   char:SetAttribute("MaxStamina", MaxStamina.CurrentValue)
+   char:SetAttribute("MaxStamina", Value)
    end,
 })
