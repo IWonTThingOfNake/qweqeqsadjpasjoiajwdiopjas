@@ -37,8 +37,6 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local rs = game:GetService("ReplicatedStorage")
-
 function getRandomPlr()
     return game.Players:GetChildren()[math.random(1,#game.Players:GetChildren())]
 end
@@ -62,15 +60,38 @@ local Button = Universal:CreateButton({
 
 local DOD = Window:CreateTab("Die of Death", 4483362458) -- Title, Image
 
-DOD:CreateSection("Killer")
-
 local Button = DOD:CreateButton({
    Name = "Teleport to Random Player",
    Callback = function()
   local attacking = getRandomPlr()
         local plr,char,hum = getClient()
         char.HumanoidRootPart.CFrame = attacking.Character.HumanoidRootPart.CFrame
-        rs.Events.RemoteFunctions.UseAbility:InvokeServer("Slash")
         task.wait(1.2)
+   end,
+})
+
+local Slider = DOD:CreateSlider({
+   Name = "WalkSpeed",
+   Range = {1, 100},
+   Increment = 1,
+   Suffix = "WalkSpeed",
+   CurrentValue = 10,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   local plr,char,hum = getClient()
+   char:SetAttribute("WalkSpeed", Slider.CurrentValue)
+   end,
+})
+
+local MaxStamina = DOD:CreateSlider({
+   Name = "Max Stamina",
+   Range = {100,10000},
+   Increment = 100,
+   Suffix = "Stamina",
+   CurrentValue = 10,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   local plr,char,hum = getClient()
+   char:SetAttribute("MaxStamina", MaxStamina.CurrentValue)
    end,
 })
