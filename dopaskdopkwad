@@ -58,6 +58,40 @@ local Button = Universal:CreateButton({
    end,
 })
 
+local Slider = Universal:CreateSlider({
+   Name = "WalkSpeed",
+   Range = {1, 1000},
+   Increment = 1,
+   Suffix = "WalkSpeed",
+   CurrentValue = 10,
+   Flag = "skibiditoilet+-", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   local plr,char,hum = getClient()
+   hum.WalkSpeed = Value
+   end,
+})
+
+local Slider = Universal:CreateSlider({
+   Name = "JumpPower",
+   Range = {1, 1000},
+   Increment = 1,
+   Suffix = "JumpPower",
+   CurrentValue = 10,
+   Flag = "aaaa", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   local plr,char,hum = getClient()
+   hum.JumpPower = Value
+   end,
+})
+
+local InfJump = Tab:CreateToggle({
+   Name = "Inf Jump,
+   CurrentValue = false,
+   Flag = "dasdasdasda", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   end,
+})
+
 local DOD = Window:CreateTab("Die of Death", 4483362458) -- Title, Image
 
 local Button = DOD:CreateButton({
@@ -95,25 +129,12 @@ local MaxStamina = DOD:CreateSlider({
    end,
 })
 
-local StunIm = DOD:CreateSlider({
-   Name = "Stun Immunity Time",
-   Range = {0,500},
-   Increment = 1,
-   Suffix = "Stun Immunity Time",
-   CurrentValue = 500,
-   Flag = "Slider3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-   local plr,char,hum = getClient()
-   plr.Character:SetAttribute("StunImmunityTime", Value)
-   end,
-})
+game:GetService("UserInputService").JumpRequest:Connect(function()
+    local plr,char,humanoid = getClient()
 
-local Button = DOD:CreateButton({
-   Name = "No Stun",
-   Callback = function()
-        local plr,char,hum = getClient()
-        plr.Character:GetAttributeChangedSignal('Stunned'):Connect(function()
-            plr.Character:SetAttribute("Stunned", false)
-        end)
-   end,
-})
+    if InfJump.CurrentValue == true then
+        if humanoid and humanoid:GetState() ~= Enum.HumanoidStateType.Dead then
+            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+        end
+    end
+end
