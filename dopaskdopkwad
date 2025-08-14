@@ -107,14 +107,3 @@ local StunIm = DOD:CreateSlider({
    plr.Character:SetAttribute("StunImmunityTime", Value)
    end,
 })
-
---[[local Button = DOD:CreateButton({
-   Name = "No Stun",
-   Callback = function()
-        local plr,char,hum = getClient()
-        plr.Character:GetAttributeChangedSignal('Stunned'):Connect(function()
-            plr.Character:SetAttribute("Stunned", false)
-        end
-   end,
-})
---]]
