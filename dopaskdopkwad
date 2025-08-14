@@ -2,38 +2,29 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 
 local Window = Rayfield:CreateWindow({
    Name = "Hax",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   Icon = 0,
    LoadingTitle = "Rayfield Interface Suite",
    LoadingSubtitle = "by Sirius",
-   ShowText = "Rayfield", -- for mobile users to unhide rayfield, change if you'd like
-   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
-
-   ToggleUIKeybind = "K", -- The keybind to toggle the UI visibility (string like "K" or Enum.KeyCode)
-
+   ShowText = "Rayfield",
+   Theme = "Default",
+   ToggleUIKeybind = "K",
    DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
-
+   DisableBuildWarnings = false,
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = nil, -- Create a custom folder for your hub/game
+      FolderName = nil,
       FileName = "Big Hub"
    },
-
-   Discord = {
-      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
-      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
-      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-   },
-
-   KeySystem = false, -- Set this to true to use our key system
+   Discord = { Enabled = false, Invite = "noinvitelink", RememberJoins = true },
+   KeySystem = false,
    KeySettings = {
       Title = "Untitled",
       Subtitle = "Key System",
-      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
-      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+      Note = "No method of obtaining the key is provided",
+      FileName = "Key",
+      SaveKey = true,
+      GrabKeyFromSite = false,
+      Key = {"Hello"}
    }
 })
 
@@ -43,99 +34,108 @@ end
 
 function getClient()
     local plr = game.Players.LocalPlayer
-local char = plr.Character
-local humanoid = char.Humanoid
-
-return plr,char,humanoid
+    local char = plr.Character
+    local humanoid = char and char:FindFirstChildOfClass("Humanoid")
+    return plr,char,humanoid
 end
 
+-- Universal Tab
 local Universal = Window:CreateTab("Universal", 4483362458)
 
-local Button = Universal:CreateButton({
+-- Destroy Rayfield Button
+Universal:CreateButton({
    Name = "Destroy Rayfield",
    Callback = function()
-   Rayfield:Destroy()
+       Rayfield:Destroy()
    end,
 })
 
-local Slider = Universal:CreateSlider({
+-- WalkSpeed Slider
+Universal:CreateSlider({
    Name = "WalkSpeed",
    Range = {1, 1000},
    Increment = 1,
    Suffix = "WalkSpeed",
-   CurrentValue = 10,
-   Flag = "Flag11", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   CurrentValue = 16,
+   Flag = "WalkSpeedFlag",
    Callback = function(Value)
-   local plr,char,hum = getClient()
-   hum.WalkSpeed = Value
+       local plr,char,hum = getClient()
+       if hum then hum.WalkSpeed = Value end
    end,
 })
 
-local Slider = Universal:CreateSlider({
+-- JumpPower Slider
+Universal:CreateSlider({
    Name = "JumpPower",
-   Range = {1, 1000},
+   Range = {1, 500},
    Increment = 1,
    Suffix = "JumpPower",
-   CurrentValue = 10,
-   Flag = "aaaa", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   CurrentValue = 50,
+   Flag = "JumpPowerFlag",
    Callback = function(Value)
-   local plr,char,hum = getClient()
-   hum.JumpPower = Value
+       local plr,char,hum = getClient()
+       if hum then hum.JumpPower = Value end
    end,
 })
 
+-- Infinite Jump Toggle
 local InfJump = Universal:CreateToggle({
    Name = "Inf Jump",
    CurrentValue = false,
-   Flag = "dasdasdasda", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "InfJumpFlag",
    Callback = function(Value)
-      print("Cheese")
+       -- nothing needed here, handled by UserInputService
    end,
 })
 
-local DOD = Window:CreateTab("Die of Death", 4483362458) -- Title, Image
+-- Die of Death Tab
+local DOD = Window:CreateTab("Die of Death", 4483362458)
 
-local Button = DOD:CreateButton({
+-- Teleport Button
+DOD:CreateButton({
    Name = "Teleport to Random Player",
    Callback = function()
-  local attacking = getRandomPlr()
-        local plr,char,hum = getClient()
-        char.HumanoidRootPart.CFrame = attacking.Character.HumanoidRootPart.CFrame
+       local attacking = getRandomPlr()
+       local plr,char,hum = getClient()
+       if char and attacking.Character and attacking.Character:FindFirstChild("HumanoidRootPart") then
+           char.HumanoidRootPart.CFrame = attacking.Character.HumanoidRootPart.CFrame
+       end
    end,
 })
 
-local Slider = DOD:CreateSlider({
+-- WalkSpeed Slider (DOD)
+DOD:CreateSlider({
    Name = "WalkSpeed",
    Range = {1, 100},
    Increment = 1,
    Suffix = "WalkSpeed",
    CurrentValue = 10,
-   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Slider1",
    Callback = function(Value)
-   local plr,char,hum = getClient()
-   char:SetAttribute("WalkSpeed", Value)
+       local plr,char,hum = getClient()
+       if char then char:SetAttribute("WalkSpeed", Value) end
    end,
 })
 
-local MaxStamina = DOD:CreateSlider({
+-- Max Stamina Slider
+DOD:CreateSlider({
    Name = "Max Stamina",
    Range = {100,10000},
    Increment = 100,
    Suffix = "Stamina",
    CurrentValue = 100,
-   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Slider2",
    Callback = function(Value)
-   local plr,char,hum = getClient()
-   plr.Character:SetAttribute("MaxStamina", Value)
+       local plr,char,hum = getClient()
+       if plr.Character then plr.Character:SetAttribute("MaxStamina", Value) end
    end,
 })
 
+-- Infinite Jump functionality
 game:GetService("UserInputService").JumpRequest:Connect(function()
-    local plr,char,humanoid = getClient()
-
-    if InfJump.CurrentValue == true then
-        if humanoid and humanoid:GetState() ~= Enum.HumanoidStateType.Dead then
-            humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-        end
+    local plr,char,hum = getClient()
+    if InfJump.CurrentValue and hum and hum:GetState() ~= Enum.HumanoidStateType.Dead then
+        hum:ChangeState(Enum.HumanoidStateType.Jumping)
     end
-end
+end)
+
