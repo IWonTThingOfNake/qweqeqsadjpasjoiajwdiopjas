@@ -89,7 +89,7 @@ local MaxStamina = DOD:CreateSlider({
    Increment = 100,
    Suffix = "Stamina",
    CurrentValue = 10,
-   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
    local plr,char,hum = getClient()
    char:SetAttribute("MaxStamina", Value)
