@@ -1,4 +1,8 @@
+print("START RAYFIELD!")
+
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+print("First Variable")
 
 local Window = Rayfield:CreateWindow({
    Name = "Hax",
@@ -39,6 +43,8 @@ function getClient()
     return plr,char,humanoid
 end
 
+print("Second")
+
 -- Universal Tab
 local Universal = Window:CreateTab("Universal", 4483362458)
 
@@ -78,6 +84,8 @@ Universal:CreateSlider({
    end,
 })
 
+print("ok")
+
 -- Infinite Jump Toggle
 local InfJump = Universal:CreateToggle({
    Name = "Inf Jump",
@@ -87,6 +95,8 @@ local InfJump = Universal:CreateToggle({
        -- nothing needed here, handled by UserInputService
    end,
 })
+
+print("YES!")
 
 -- Die of Death Tab
 local DOD = Window:CreateTab("Die of Death", 4483362458)
@@ -133,6 +143,7 @@ DOD:CreateSlider({
 
 -- Infinite Jump functionality
 game:GetService("UserInputService").JumpRequest:Connect(function()
+print("Hey wsp")
     local plr,char,hum = getClient()
     if InfJump.CurrentValue and hum and hum:GetState() ~= Enum.HumanoidStateType.Dead then
         hum:ChangeState(Enum.HumanoidStateType.Jumping)
