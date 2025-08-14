@@ -66,7 +66,6 @@ local Button = DOD:CreateButton({
   local attacking = getRandomPlr()
         local plr,char,hum = getClient()
         char.HumanoidRootPart.CFrame = attacking.Character.HumanoidRootPart.CFrame
-        task.wait(1.2)
    end,
 })
 
@@ -93,5 +92,28 @@ local MaxStamina = DOD:CreateSlider({
    Callback = function(Value)
    local plr,char,hum = getClient()
    plr.Character:SetAttribute("MaxStamina", Value)
+   end,
+})
+
+local StunIm = DOD:CreateSlider({
+   Name = "Stun Immunity Time",
+   Range = {0,500},
+   Increment = 1,
+   Suffix = "Stun Immunity Time",
+   CurrentValue = 10,
+   Flag = "Slider3", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   local plr,char,hum = getClient()
+   plr.Character:SetAttribute("StunImmunityTime", Value)
+   end,
+})
+
+local Button = DOD:CreateButton({
+   Name = "No Stun",
+   Callback = function()
+        local plr,char,hum = getClient()
+        char:GetAttributeChangedSignal('Stunned'):Connect(function()
+            char:SetAttribute("Stunned", false)
+        end
    end,
 })
