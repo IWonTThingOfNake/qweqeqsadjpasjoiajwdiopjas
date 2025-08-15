@@ -1,8 +1,4 @@
-print("Started Rayfield...")
-
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
-print("Success!")
 
 local Window = Rayfield:CreateWindow({
    Name = "Hax",
