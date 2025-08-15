@@ -89,7 +89,7 @@ local Slider = Universal:CreateSlider({
 })
 
 local InfJump = Universal:CreateToggle({
-   Name = "Inf Jump,
+   Name = "Inf Jump",
    CurrentValue = false,
    Flag = "dasdasdasda", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -97,13 +97,13 @@ local InfJump = Universal:CreateToggle({
 })
 
 local plrESP = Universal:CreateToggle({
-   Name = "PlayerESP,
+   Name = "PlayerESP",
    CurrentValue = false,
    Flag = "kakalaka", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
       function esp(plr)
           local highlight = Instance.new("Highlight", plr.Character)
-            highlight.FillColor = Color.new(1,1,1)
+            highlight.FillColor = Color3.new(1,1,1)
             highlight.FillTransparency = 0
             highlight.Name = "HighlightXyn"
       end
