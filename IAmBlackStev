@@ -159,7 +159,7 @@ local MaxStamina = DOD:CreateSlider({
 
 local Forsaken = Window:CreateTab("Forsaken", 4483362458) -- Title, Image
 
-local ssss = DOD:CreateSlider({
+local ssss = Forsaken:CreateSlider({
    Name = "Speed Multiplier",
    Range = {1, 10},
    Increment = 1,
