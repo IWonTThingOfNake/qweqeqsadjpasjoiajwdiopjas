@@ -157,6 +157,21 @@ local MaxStamina = DOD:CreateSlider({
    end,
 })
 
+local Forsaken = Window:CreateTab("Forsaken", 4483362458) -- Title, Image
+
+local ssss = DOD:CreateSlider({
+   Name = "Speed Multiplier",
+   Range = {1, 10},
+   Increment = 1,
+   Suffix = "WalkSpeed",
+   CurrentValue = 1,
+   Flag = "forsakan#132123", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   local plr,char,hum = getClient()
+   char.SpeedMultipliers.Sprinting.Value = Value
+   end,
+})
+
 game:GetService("UserInputService").JumpRequest:Connect(function()
     local plr,char,humanoid = getClient()
 
