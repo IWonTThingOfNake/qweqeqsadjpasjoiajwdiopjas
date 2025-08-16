@@ -227,7 +227,7 @@ local colorPlrESPForsaken = Universal:CreateToggle({
       if Value == true then
          for i,plr in pairs(game.Players:GetPlayers()) do
              if plr.Character:FindFirstChild("HighlightXyn") then
-               if plr.Character.Parent.Name == "Killers then
+               if plr.Character.Parent.Name == "Killers" then
                   plr.Character.HighlightXyn.FillColor = Color3.new(1,0,0)
                elseif plr.Character.Parent.Name == "Survivors" then
                   plr.Character.HighlightXyn.FillColor = Color3.new(0,1,0)
