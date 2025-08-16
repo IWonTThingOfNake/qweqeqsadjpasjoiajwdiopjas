@@ -218,6 +218,34 @@ local genESP = Forsaken:CreateToggle({
    end,
 })
 
+local colorPlrESPForsaken = Universal:CreateToggle({
+   Name = "Color Plr ESP",
+   CurrentValue = false,
+   Flag = "notaitsaperses", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+
+      if Value == true then
+         for i,plr in pairs(game.Players:GetPlayers()) do
+             if plr.Character:FindFirstChild("HighlightXyn") then
+               if plr.Character.Parent.Name == "Killers then
+                  plr.Character.HighlightXyn.FillColor = Color3.new(1,0,0)
+               elseif plr.Character.Parent.Name == "Survivors" then
+                  plr.Character.HighlightXyn.FillColor = Color3.new(0,1,0)
+               else
+                  plr.Character.HighlightXyn.FillColor = Color3.new(0,0,0)
+               end
+            end
+         end
+      else
+         for i,plr in pairs(game.Players:GetPlayers()) do
+            if plr.Character:FindFirstChild("HighlightXyn") then
+               plr.Character.HighlightXyn.FillColor = Color3.new(0,0,0)
+            end
+         end
+      end
+   end,
+})
+
 game:GetService("UserInputService").JumpRequest:Connect(function()
     local plr,char,humanoid = getClient()
 
