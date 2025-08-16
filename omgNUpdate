@@ -174,7 +174,7 @@ local ssss = Forsaken:CreateSlider({
 
 local autoGen = false
 
-local omgGen = Universal:CreateToggle({
+local omgGen = Forsaken:CreateToggle({
    Name = "Auto Gen",
    CurrentValue = false,
    Flag = "skibiForsakenNigger", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
@@ -182,13 +182,38 @@ local omgGen = Universal:CreateToggle({
       autoGen = Value
 
       while autoGen == true do
-         for i,v in pairs(workspace.Map.Ingame.Map:GetChildren()) do
+         if workspace.Map.Ingame:FindFirstChild("Map") then
+for i,v in pairs(workspace.Map.Ingame.Map:GetChildren()) do
             if v.Name == "Generator" then
                v.Remotes.RE:FireServer()
             end
          end
 
          task.wait(1.5)
+         end
+      end
+   end,
+})
+
+local genESP = Forsaken:CreateToggle({
+   Name = "Gen ESP",
+   CurrentValue = false,
+   Flag = "fuckTheGens", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      if Value == true then
+         if workspace.Map.Ingame:FindFirstChild("Map") then
+             for i,v in pairs(workspace.Map.Ingame.Map) do
+               if v.Name == "Generator" then
+                  esp(v)
+               end
+            end
+         end
+      else
+ for i,v in pairs(workspace.Map.Ingame.Map) do
+               if v.Name == "Generator" and v:FindFirstChild("HighlightXyn") then
+                  v.HighlightXyn:Destroy()
+               end
+            end
       end
    end,
 })
