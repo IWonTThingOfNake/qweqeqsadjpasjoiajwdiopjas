@@ -92,25 +92,12 @@ local InfJump = Universal:CreateToggle({
    end,
 })
 
-      local function esp(obj)
-          local highlight = Instance.new("Highlight", obj)
-            highlight.FillColor = Color3.new(1,1,1)
-            highlight.FillTransparency = 0
-            highlight.Name = "HighlightXyn"
-      end
-
 local plrESP = Universal:CreateToggle({
    Name = "PlayerESP",
    CurrentValue = false,
    Flag = "kakalaka", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-
-      if Value == true then
-         for i,plr in pairs(game.Players:GetPlayers()) do
-             esp(plr.Character)
-             plr.CharacterAdded:Connect(esp)
-         end
-      else
+      if Value == false then
          for i,plr in pairs(game.Players:GetPlayers()) do
             if plr.Character:FindFirstChild("HighlightXyn") then
                plr.Character.HighlightXyn:Destroy()
@@ -119,6 +106,14 @@ local plrESP = Universal:CreateToggle({
       end
    end,
 })
+
+      local function esp(obj)
+          if obj:IsA("Model") and obj:FindFirstChild("Humanoid") then
+            if plrESP.CurrentValue ~= true then return end
+         end
+
+         esp(obj)
+      end
 
 local Button = Universal:CreateButton({
    Name = "Teleport to Random Player",
@@ -255,3 +250,8 @@ game:GetService("UserInputService").JumpRequest:Connect(function()
         end
     end
 end)
+
+         for i,plr in pairs(game.Players:GetPlayers()) do
+             esp(plr.Character)
+             plr.CharacterAdded:Connect(esp)
+         end
