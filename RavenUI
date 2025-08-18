@@ -1,0 +1,246 @@
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+------------------------------------------------------------
+-- Theme
+------------------------------------------------------------
+local Theme = {
+    Background = Color3.fromRGB(0,0,0),  -- Black
+    Accent = Color3.fromRGB(200,0,0),    -- Red
+    Text = Color3.fromRGB(255,255,255),  -- White
+    Font = Enum.Font.GothamBold
+}
+
+------------------------------------------------------------
+-- Main ravenUI table
+------------------------------------------------------------
+local ravenUI = {}
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ravenUI"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = PlayerGui
+
+------------------------------------------------------------
+-- WINDOW
+------------------------------------------------------------
+function ravenUI:Window(props)
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(0,300,0,200)
+    frame.Position = UDim2.new(0.5,-150,0.5,-100)
+    frame.BackgroundColor3 = Theme.Background
+    frame.BorderSizePixel = 2
+    frame.BorderColor3 = Theme.Accent
+    frame.Parent = screenGui
+
+    local title = Instance.new("TextLabel")
+    title.Size = UDim2.new(1,0,0,30)
+    title.BackgroundTransparency = 1
+    title.Text = props and props.Name or "Window"
+    title.TextColor3 = Theme.Accent
+    title.Font = Theme.Font
+    title.TextScaled = true
+    title.Parent = frame
+
+    local container = Instance.new("UIListLayout")
+    container.FillDirection = Enum.FillDirection.Vertical
+    container.Padding = UDim.new(0,5)
+    container.Parent = frame
+
+    return frame
+end
+
+------------------------------------------------------------
+-- BUTTON
+------------------------------------------------------------
+function ravenUI:Button(props)
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, -10, 0, 40)
+    button.BackgroundColor3 = Theme.Accent
+    button.Text = props.Name or "Button"
+    button.TextColor3 = Theme.Text
+    button.Font = Theme.Font
+    button.TextScaled = true
+    button.AutoButtonColor = false
+
+    button.MouseEnter:Connect(function()
+        button.BackgroundColor3 = Color3.fromRGB(150,0,0)
+    end)
+    button.MouseLeave:Connect(function()
+        button.BackgroundColor3 = Theme.Accent
+    end)
+
+    button.MouseButton1Click:Connect(function()
+        if props.Callback then
+            props.Callback()
+        end
+    end)
+
+    return button
+end
+
+------------------------------------------------------------
+-- SLIDER
+------------------------------------------------------------
+function ravenUI:Slider(props)
+    local sliderFrame = Instance.new("Frame")
+    sliderFrame.Size = UDim2.new(1, -10, 0, 50)
+    sliderFrame.BackgroundColor3 = Theme.Background
+    sliderFrame.BorderColor3 = Theme.Accent
+    sliderFrame.BorderSizePixel = 2
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 0, 20)
+    label.BackgroundTransparency = 1
+    label.Text = props.Name or "Slider"
+    label.TextColor3 = Theme.Text
+    label.Font = Theme.Font
+    label.TextScaled = true
+    label.Parent = sliderFrame
+
+    local bar = Instance.new("Frame")
+    bar.Size = UDim2.new(1,-20,0,6)
+    bar.Position = UDim2.new(0,10,0.5,-3)
+    bar.BackgroundColor3 = Theme.Accent
+    bar.Parent = sliderFrame
+
+    local knob = Instance.new("Frame")
+    knob.Size = UDim2.new(0,12,0,20)
+    knob.Position = UDim2.new(0,0,0.5,-10)
+    knob.BackgroundColor3 = Theme.Text
+    knob.Parent = sliderFrame
+    knob.Active = true
+    knob.Draggable = true
+
+    local min = props.Min or 1
+    local max = props.Max or 100
+    local value = props.CurrentValue or min
+    local callback = props.Callback or function() end
+
+    knob:GetPropertyChangedSignal("Position"):Connect(function()
+        local pct = math.clamp(knob.Position.X.Scale,0,1)
+        value = math.floor(min + (max-min) * pct)
+        callback(value)
+    end)
+
+    return sliderFrame
+end
+
+------------------------------------------------------------
+-- TOGGLE
+------------------------------------------------------------
+function ravenUI:Toggle(props)
+    local toggle = Instance.new("TextButton")
+    toggle.Size = UDim2.new(1,-10,0,40)
+    toggle.BackgroundColor3 = Theme.Background
+    toggle.TextColor3 = Theme.Text
+    toggle.Font = Theme.Font
+    toggle.TextScaled = true
+    toggle.Text = props.Name or "Toggle"
+
+    local state = props.CurrentValue or false
+    local callback = props.Callback or function() end
+
+    local function update()
+        toggle.BorderSizePixel = 2
+        toggle.BorderColor3 = state and Theme.Accent or Color3.fromRGB(80,80,80)
+    end
+    update()
+
+    toggle.MouseButton1Click:Connect(function()
+        state = not state
+        update()
+        callback(state)
+    end)
+
+    return toggle
+end
+
+------------------------------------------------------------
+-- DROPDOWN
+------------------------------------------------------------
+function ravenUI:Dropdown(props)
+    local frame = Instance.new("Frame")
+    frame.Size = UDim2.new(1,-10,0,80)
+    frame.BackgroundColor3 = Theme.Background
+    frame.BorderColor3 = Theme.Accent
+    frame.BorderSizePixel = 2
+
+    local label = Instance.new("TextLabel")
+    label.Size = UDim2.new(1,0,0,20)
+    label.BackgroundTransparency = 1
+    label.Text = props.Name or "Dropdown"
+    label.TextColor3 = Theme.Text
+    label.Font = Theme.Font
+    label.TextScaled = true
+    label.Parent = frame
+
+    local options = props.Options or {}
+    local dropdownLayout = Instance.new("UIListLayout")
+    dropdownLayout.FillDirection = Enum.FillDirection.Vertical
+    dropdownLayout.Parent = frame
+
+    for _,opt in ipairs(options) do
+        local btn = Instance.new("TextButton")
+        btn.Size = UDim2.new(1,0,0,20)
+        btn.BackgroundColor3 = Theme.Accent
+        btn.Text = opt
+        btn.TextColor3 = Theme.Text
+        btn.Font = Theme.Font
+        btn.TextScaled = true
+        btn.Parent = frame
+    end
+
+    return frame
+end
+
+------------------------------------------------------------
+-- DIVIDER
+------------------------------------------------------------
+function ravenUI:Divider(props)
+    local div = Instance.new("TextLabel")
+    div.Size = UDim2.new(1,-10,0,20)
+    div.BackgroundColor3 = Theme.Accent
+    div.Text = props.Name or \"---\"
+    div.TextColor3 = Theme.Text
+    div.Font = Theme.Font
+    div.TextScaled = true
+    return div
+end
+
+------------------------------------------------------------
+-- Example usage
+------------------------------------------------------------
+local window = ravenUI:Window({Name = "My Window"})
+local btn = ravenUI:Button({
+    Name = "Btn Ex",
+    Callback = function() print("Clicked Btn Ex") end
+})
+btn.Parent = window
+
+local slider = ravenUI:Slider({
+    Name = "Slider Ex",
+    Min = 1,
+    Max = 100,
+    CurrentValue = 50,
+    Callback = function(val) print("Slider:",val) end
+})
+slider.Parent = window
+
+local toggle = ravenUI:Toggle({
+    Name = "Toggle Ex",
+    CurrentValue = false,
+    Callback = function(val) print("Toggle:",val) end
+})
+toggle.Parent = window
+
+local dropdown = ravenUI:Dropdown({
+    Name = "Dropdown Ex",
+    Options = {"Ex1","Ex2"}
+})
+dropdown.Parent = window
+
+local divider = ravenUI:Divider({
+    Name = "I'm a divider!"
+})
+divider.Parent = window
